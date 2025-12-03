@@ -30,8 +30,8 @@ COPY . .
 # permisos básicos (si usas var/cache y var/log)
 RUN chown -R www-data:www-data var || true \
   && chmod -R 775 var || true
-
+# Exponer 80 por compatibilidad
 EXPOSE 80
 
-# arrancar Apache (servirá public/index.php)
-CMD ["apache2-foreground"]
+# Arrancar con el servidor embebido de PHP y respetar $PORT si existe
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-80} -t public"]
